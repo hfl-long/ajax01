@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+    <head>
+        <title>test01.html</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+        <select id="province" name="province">
+            <option value="">请选择....</option>
+            <option value="吉林省">吉林省</option>
+            <option value="辽宁省">辽宁省</option>
+            <option value="山东省">山东省</option>
+        </select>
+        <select id="city" name="city">
+            <option value="">请选择.....</option>
+        </select>
+    </body>
+    <script language="JavaScript">
+    	window.onload=function(){
+		   document.getElementById("province").onchange=function(){
+			  var pvalue=this.value;
+/****************************************************************************************************/				  
+		     //删除	 
+			  /*
+			   *     <select id="city" name="city">
+			            <option value="">请选择.....</option>
+			         </select>
+			   */
+			  var cityElement=document.getElementById("city");
+			  var oldOptionElements=cityElement.getElementsByTagName("option");
+			  for(var i=oldOptionElements.length-1;i>0;i--){
+			  	cityElement.removeChild(oldOptionElements[i]);
+			  }
+			  
+/****************************************************************************************************/			
+			  var xmlDoc=parseXML("cities.xml");
+			  var provinceXmlElements=xmlDoc.getElementsByTagName("province");
+			  var provinceElement=null;
+			  //alert(provinceXmlElements.length);		
+			  for(var i=0;i<provinceXmlElements.length;i++){
+			  	 
+				 //<province name="吉林省">
+			  	 var provinceXmlElement=provinceXmlElements[i];
+				 
+				 //<province name="吉林省">
+				 var nameAttr=provinceXmlElement.getAttribute("name");
+				 if(nameAttr==pvalue){
+				 	//保存省的元素为全局变量
+				 	provinceElement=provinceXmlElement;
+				 }
+			  }
+/******************************************************************************************************/			  
+			  if(provinceElement!=null){
+			  	/*
+			  	 * <province name="吉林省">
+						<city>长春</city>
+						<city>吉林市</city>
+						<city>四平</city>
+						<city>松原</city>
+						<city>通化</city>
+					</province>
+			  	 */
+				var cityXmlElements=provinceElement.getElementsByTagName("city");
+				for(var i=0;i<cityXmlElements.length;i++){
+				   	var cityValue=cityXmlElements[i].firstChild.nodeValue;
+					
+					var optionElement=document.createElement("option");
+					optionElement.setAttribute("cityValue",cityValue);
+					var optionTextElement=document.createTextNode(cityValue);
+					optionElement.appendChild(optionTextElement);
+					
+					cityElement.appendChild(optionElement);
+					
+				}
+			  }  
+		   }
+		}
+		/**
+    	 * 跨浏览器的解析xml文件的函数
+    	 * @param {Object} fileXmlName
+    	 */
+        function parseXML(fileXmlName){
+            var xmlDoc;			
+			try {//Internet Explorer  创建一个空的xml文档
+				xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+			} 
+			catch (e) {
+				try {//Firefox, Mozilla, Opera, 创建一个空的xml文档
+					xmlDoc = document.implementation.createDocument("", "", null);
+				} 
+				catch (e) {
+				}
+			}
+			//关闭异步加载
+			xmlDoc.async = false;
+			//加载xml文件
+			xmlDoc.load(fileXmlName);
+			return xmlDoc;
+		}
+    </script>
+</html>
