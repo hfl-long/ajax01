@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>itcast.cn用户名校验ajax实例</title>
+    <script type="text/javascript" src="jslib/verify.js"></script>
+    <script type="text/javascript" src="jslib/jquery.js"></script>
+</head>
+<body>
+    itcast.cn用户名校验的ajax实例，请输入用户名：<br/>
+     <!--ajax方式不需要使用表单来进行数据提交，因此不用写表单标签按-->
+     <!--ajax方式不需要name属性，需要一个id属性-->
+    <input type="text" id="userName"/>
+    <input type="button" value="校验" onclick="verify()"/>
+    <!--这个div用于存放服务器返回的信息，开始为空-->
+    <!--id属性定义是为了利用dom的方式找到某一个节点，进行操作-->
+    <div id="result"></div><!--<div>456</div>-->
+    <!--<span>123</span><span>456</span>-->
+    <!--div和span的直观差异，div中的内容独占行，span中的内容和前后其它内容相处良好-->
+</body>
+
+</html>
